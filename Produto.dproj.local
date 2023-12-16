@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2023/03/15 21:22:53.000.317,=C:\Users\Adriano Santos\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/03/21 18:56:40.000.082,=C:\Users\Adriano Santos\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/12/04 00:30:03.000.003,=C:\Users\Adriano Santos\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/12/16 01:53:12.116,=C:\Users\Adriano Santos\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/12/16 01:53:38.929,C:\Users\Adriano Santos\Documents\Projetos Delphi\Cadastro Produtos\unitPrincipal.pas=C:\Users\Adriano Santos\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/12/16 01:53:38.929,C:\Users\Adriano Santos\Documents\Projetos Delphi\Cadastro Produtos\unitPrincipal.dfm=C:\Users\Adriano Santos\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2023/12/16 01:53:45.485,C:\Users\Adriano Santos\Documents\Projetos Delphi\Cadastro Produtos\Produto.dproj=C:\Users\Adriano Santos\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2023/12/16 01:53:50.183,=C:\Users\Adriano Santos\Documents\Projetos Delphi\Cadastro Produtos\Unit1.pas</Transaction>
+    <Transaction>2023/12/16 01:54:24.726,=C:\Users\Adriano Santos\Documents\Projetos Delphi\Cadastro Produtos\Unit1.pas</Transaction>
+    <Transaction>2023/12/16 01:54:43.578,C:\Users\Adriano Santos\Documents\Projetos Delphi\Cadastro Produtos\unitDM.pas=C:\Users\Adriano Santos\Documents\Projetos Delphi\Cadastro Produtos\Unit1.pas</Transaction>
+    <Transaction>2023/12/16 01:54:43.578,C:\Users\Adriano Santos\Documents\Projetos Delphi\Cadastro Produtos\unitDM.dfm=C:\Users\Adriano Santos\Documents\Projetos Delphi\Cadastro Produtos\Unit1.dfm</Transaction>
+  </Transactions>
+</BorlandProject>
