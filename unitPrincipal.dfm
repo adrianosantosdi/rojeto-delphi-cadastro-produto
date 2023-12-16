@@ -21,7 +21,6 @@ object Form1: TForm1
     Height = 89
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 897
     object btnNovo: TButton
       Left = 16
       Top = 21
@@ -91,10 +90,6 @@ object Form1: TForm1
     Height = 516
     Align = alClient
     TabOrder = 1
-    ExplicitLeft = 352
-    ExplicitTop = 232
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object Panel3: TPanel
       Left = 1
       Top = 352
@@ -102,8 +97,6 @@ object Form1: TForm1
       Height = 163
       Align = alBottom
       TabOrder = 0
-      ExplicitLeft = 0
-      ExplicitWidth = 895
       object Label1: TLabel
         Left = 16
         Top = 24
@@ -121,22 +114,23 @@ object Form1: TForm1
       object Label3: TLabel
         Left = 502
         Top = 24
-        Width = 18
+        Width = 20
         Height = 13
-        Caption = 'ean'
+        Caption = 'EAN'
       end
       object Label4: TLabel
-        Left = 629
+        Left = 664
         Top = 24
-        Width = 86
+        Width = 95
         Height = 13
-        Caption = 'PRE'#199'O DE VENDA'
+        Caption = 'DATA DE VALIDADE'
       end
       object edtId: TEdit
         Left = 15
         Top = 43
         Width = 121
         Height = 21
+        Enabled = False
         TabOrder = 0
       end
       object edtDescricao: TEdit
@@ -144,28 +138,35 @@ object Form1: TForm1
         Top = 43
         Width = 353
         Height = 21
+        CharCase = ecUpperCase
+        Enabled = False
         TabOrder = 1
       end
       object edtEan: TEdit
         Left = 501
         Top = 43
-        Width = 121
-        Height = 21
-        TabOrder = 2
-      end
-      object edtPrecoVenda: TEdit
-        Left = 628
-        Top = 43
         Width = 156
         Height = 21
+        Enabled = False
+        TabOrder = 2
+      end
+      object masDataValidade: TMaskEdit
+        Left = 663
+        Top = 43
+        Width = 159
+        Height = 21
+        EditMask = '##/##/####;1;_'
+        MaxLength = 10
         TabOrder = 3
+        Text = '  /  /    '
       end
     end
-    object DBGrid1: TDBGrid
+    object dbgProdutos: TDBGrid
       Left = 78
       Top = 24
       Width = 665
       Height = 289
+      DataSource = DM.dsProdutos
       TabOrder = 1
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText

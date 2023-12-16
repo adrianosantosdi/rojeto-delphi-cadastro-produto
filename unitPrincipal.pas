@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Grids,
-  Vcl.DBGrids, Vcl.ExtCtrls;
+  Vcl.DBGrids, Vcl.ExtCtrls, Vcl.Mask;
 
 type
   TForm1 = class(TForm)
@@ -19,7 +19,7 @@ type
     edtPesquisar: TEdit;
     Panel2: TPanel;
     Panel3: TPanel;
-    DBGrid1: TDBGrid;
+    dbgProdutos: TDBGrid;
     Label1: TLabel;
     edtId: TEdit;
     Label2: TLabel;
@@ -27,7 +27,7 @@ type
     Label3: TLabel;
     edtEan: TEdit;
     Label4: TLabel;
-    edtPrecoVenda: TEdit;
+    masDataValidade: TMaskEdit;
     procedure btnNovoClick(Sender: TObject);
     procedure btnSalvarClick(Sender: TObject);
     procedure btnEditarClick(Sender: TObject);
@@ -42,6 +42,14 @@ type
     procedure BotaoEditar;
     procedure BotaoCancelar;
     procedure BotaoExcluir;
+    procedure HabilitarEdits;
+    procedure LimparCampos;
+    procedure LimparCancelarCampos;
+    procedure InserirEdits;
+    procedure EditarEdits;
+    procedure PopularEdits;
+    procedure ExcluirRegistro;
+
   end;
 
 var
@@ -50,6 +58,8 @@ var
 implementation
 
 {$R *.dfm}
+
+uses unitDM;
 
 procedure TForm1.BotaoCancelar;
 begin
@@ -72,11 +82,11 @@ end;
 
 procedure TForm1.BotaoExcluir;
 begin
-   btnNovo.Enabled := true;
-   btnSalvar.Enabled := true;
+   btnNovo.Enabled := false;
+   btnSalvar.Enabled := false;
    btnEditar.Enabled := false;
    btnCancelar.Enabled := false;
-   btnExcluir.Enabled := false;
+   btnExcluir.Enabled := true;
 end;
 
 procedure TForm1.BotaoNovo;
@@ -100,26 +110,120 @@ end;
 procedure TForm1.btnCancelarClick(Sender: TObject);
 begin
   BotaoCancelar;
+  MessageDlg('Deseja cancelar o registro?', mtConfirmation, [mbYes, mbNo], 0);
+  LimparCancelarCampos;
 end;
 
 procedure TForm1.btnEditarClick(Sender: TObject);
 begin
-  BotaoEditar
+  BotaoEditar;
+  EditarEdits;
+  PopularEdits;
 end;
 
 procedure TForm1.btnExcluirClick(Sender: TObject);
 begin
   BotaoExcluir;
+  ExcluirRegistro;
 end;
 
 procedure TForm1.btnNovoClick(Sender: TObject);
 begin
   BotaoNovo;
+  HabilitarEdits;
 end;
 
 procedure TForm1.btnSalvarClick(Sender: TObject);
 begin
   BotaoSalvar;
+  MessageDlg('Deseja salvar o registro?', mtConfirmation, [mbYes, mbNo],0);
+  InserirEdits;
+  LimparCampos;
+end;
+
+procedure TForm1.EditarEdits;
+begin
+  with DM.QryProdutos do
+    begin
+      close;
+      SQL.Clear;
+      SQL.Add('update produtos ' +
+          '    set descricao = :pdescricao, ' +
+          '    ean           = :pean, ' +
+          '    data_validade = :pdata_validade, ' +
+          '    where id      = :pid ');
+
+      ParamByName('pid').AsInteger := StrToInt(edtId.Text);
+      ParamByName('pdescricao').AsString := edtDescricao.Text;
+      ParamByName('pdata_validade').AsDate := StrToDate(masDataValidade.text);
+
+      try
+        ExecSQL;
+          ShowMessage('Alteração feita com sucesso');
+      except on E: Exception do
+        raise Exception.Create('Erro na Alteração do registro!' + E.Message);
+      end;
+
+    end;
+end;
+
+procedure TForm1.ExcluirRegistro;
+begin
+  with DM.QryProdutos do
+    begin
+      close;
+      SQL.Clear;
+      SQL.Add('delete from produtos where id = :pid');
+      ParamByName('pid').AsInteger := StrToInt(edtId.Text);
+      ExecSQL;
+      MessageDlg('Registro deletado com sucesso', mtConfirmation, [mbYes, mbNo], 0);
+    end;
+end;
+
+procedure TForm1.HabilitarEdits;
+begin
+  edtDescricao.Enabled := true;
+  edtDescricao.Enabled := true;
+  edtEan.Enabled := true;
+  masDataValidade.Enabled  := true;
+end;
+
+procedure TForm1.InserirEdits;
+begin
+  with DM.QryProdutos do
+    begin
+      close;
+      SQL.Clear;
+      SQL.Add('insert into produtos (descricao, ean, data_validade) values ');
+      SQL.Add('(:pdescricao, :pean, :pdata_validade)');
+      ParamByName('pdescricao').AsString := edtDescricao.Text;
+      ParamByName('pean').AsInteger := StrToInt(edtEan.Text);
+      ParamByName('pdata_validade').AsDate := StrToDate(masDataValidade.Text);
+      ExecSQL;
+    end;
+end;
+
+procedure TForm1.LimparCampos;
+begin
+  edtDescricao.Text := '';
+  edtEan.Text := '';
+  masDataValidade.Text := '';
+end;
+
+procedure TForm1.LimparCancelarCampos;
+begin
+  edtDescricao.Text := '';
+  edtEan.Text := '';
+  masDataValidade.Text := '';
+end;
+
+procedure TForm1.PopularEdits;
+begin
+  edtId.Text              := DM.QryProdutos.FieldByName('ID').AsString;
+  edtDescricao.Text       := DM.QryProdutos.FieldByName('DESCRICAO').AsString;
+  edtEan.Text             := DM.QryProdutos.FieldByName('EAN').AsString;
+  masDataValidade.Text    := DM.QryProdutos.FieldByName('DATA_VALIDADE').AsString;
+
 end;
 
 end.

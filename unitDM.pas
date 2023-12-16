@@ -16,10 +16,6 @@ type
     QryProdutos: TFDQuery;
     dsProdutos: TDataSource;
     FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink;
-    QryProdutosid: TFDAutoIncField;
-    QryProdutosdescricao: TStringField;
-    QryProdutosean: TIntegerField;
-    QryProdutospreco_venda: TBCDField;
   private
     { Private declarations }
   public
@@ -32,6 +28,8 @@ var
 implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses unitPrincipal;
 
 {$R *.dfm}
 
