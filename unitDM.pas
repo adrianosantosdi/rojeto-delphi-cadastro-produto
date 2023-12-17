@@ -16,6 +16,7 @@ type
     QryProdutos: TFDQuery;
     dsProdutos: TDataSource;
     FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink;
+    procedure dsProdutosDataChange(Sender: TObject; Field: TField);
   private
     { Private declarations }
   public
@@ -32,5 +33,11 @@ implementation
 uses unitPrincipal;
 
 {$R *.dfm}
+
+procedure TDM.dsProdutosDataChange(Sender: TObject; Field: TField);
+begin
+  if QryProdutos.Active then
+     Form1.PopularEdits;
+end;
 
 end.

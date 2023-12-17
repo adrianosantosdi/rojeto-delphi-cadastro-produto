@@ -14,7 +14,6 @@ object DM: TDM
     Top = 64
   end
   object QryProdutos: TFDQuery
-    Active = True
     Connection = FDConn
     SQL.Strings = (
       'select * from produtos')
@@ -23,6 +22,7 @@ object DM: TDM
   end
   object dsProdutos: TDataSource
     DataSet = QryProdutos
+    OnDataChange = dsProdutosDataChange
     Left = 144
     Top = 136
   end

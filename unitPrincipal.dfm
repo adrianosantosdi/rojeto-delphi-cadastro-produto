@@ -73,6 +73,7 @@ object Form1: TForm1
       Height = 28
       Caption = 'Pesquisar'
       TabOrder = 5
+      OnClick = Button6Click
     end
     object edtPesquisar: TEdit
       Left = 536
@@ -80,7 +81,7 @@ object Form1: TForm1
       Width = 207
       Height = 21
       TabOrder = 6
-      Text = 'edtPesquisar'
+      TextHint = 'Pesquisar produtos'
     end
   end
   object Panel2: TPanel

@@ -33,6 +33,7 @@ type
     procedure btnEditarClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure btnExcluirClick(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -44,11 +45,11 @@ type
     procedure BotaoExcluir;
     procedure HabilitarEdits;
     procedure LimparCampos;
-    procedure LimparCancelarCampos;
     procedure InserirEdits;
     procedure EditarEdits;
     procedure PopularEdits;
     procedure ExcluirRegistro;
+    procedure Pesquisar;
 
   end;
 
@@ -110,21 +111,25 @@ end;
 procedure TForm1.btnCancelarClick(Sender: TObject);
 begin
   BotaoCancelar;
-  MessageDlg('Deseja cancelar o registro?', mtConfirmation, [mbYes, mbNo], 0);
-  LimparCancelarCampos;
+  if MessageDlg('Deseja cancelar o registro?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+     LimparCampos;
 end;
 
 procedure TForm1.btnEditarClick(Sender: TObject);
 begin
+  HabilitarEdits;
   BotaoEditar;
-  EditarEdits;
   PopularEdits;
 end;
 
 procedure TForm1.btnExcluirClick(Sender: TObject);
 begin
-  BotaoExcluir;
-  ExcluirRegistro;
+  if MessageDlg('Deseja excluir o registro?', mtConfirmation, [mbYes, mbNo],0) = mrYes then
+  begin
+    BotaoExcluir;
+    ExcluirRegistro;
+    Pesquisar;
+  end;
 end;
 
 procedure TForm1.btnNovoClick(Sender: TObject);
@@ -135,10 +140,22 @@ end;
 
 procedure TForm1.btnSalvarClick(Sender: TObject);
 begin
-  BotaoSalvar;
-  MessageDlg('Deseja salvar o registro?', mtConfirmation, [mbYes, mbNo],0);
-  InserirEdits;
-  LimparCampos;
+  if MessageDlg('Deseja salvar o registro?', mtConfirmation, [mbYes, mbNo],0) = mrYes then
+  begin
+     if trim(edtId.Text) = '' then
+        InserirEdits
+     else
+          EditarEdits;
+
+     LimparCampos;
+     BotaoSalvar;
+     Pesquisar;
+  end;
+end;
+
+procedure TForm1.Button6Click(Sender: TObject);
+begin
+ Pesquisar;
 end;
 
 procedure TForm1.EditarEdits;
@@ -147,15 +164,16 @@ begin
     begin
       close;
       SQL.Clear;
-      SQL.Add('update produtos ' +
-          '    set descricao = :pdescricao, ' +
-          '    ean           = :pean, ' +
-          '    data_validade = :pdata_validade, ' +
-          '    where id      = :pid ');
+      SQL.Add('update produtos                 ' +
+          '    set descricao = :pdescricao,    ' +
+          '    ean           = :pean,          ' +
+          '    data_validade = :pdata_validade ' +
+          '    where id      = :pid            ');
 
       ParamByName('pid').AsInteger := StrToInt(edtId.Text);
       ParamByName('pdescricao').AsString := edtDescricao.Text;
       ParamByName('pdata_validade').AsDate := StrToDate(masDataValidade.text);
+      ParamByName('pean').AsString := edtEan.Text;
 
       try
         ExecSQL;
@@ -168,15 +186,19 @@ begin
 end;
 
 procedure TForm1.ExcluirRegistro;
+var
+  lID : Integer;
 begin
+  lID := DM.QryProdutos.FieldByName('id').AsInteger;
+
   with DM.QryProdutos do
     begin
       close;
       SQL.Clear;
       SQL.Add('delete from produtos where id = :pid');
-      ParamByName('pid').AsInteger := StrToInt(edtId.Text);
+      ParamByName('pid').AsInteger :=  lID;
       ExecSQL;
-      MessageDlg('Registro deletado com sucesso', mtConfirmation, [mbYes, mbNo], 0);
+      MessageDlg('Registro deletado com sucesso', mtInformation, [mbOK], 0);
     end;
 end;
 
@@ -205,16 +227,19 @@ end;
 
 procedure TForm1.LimparCampos;
 begin
+  edtiD.Text := '';
   edtDescricao.Text := '';
   edtEan.Text := '';
   masDataValidade.Text := '';
 end;
 
-procedure TForm1.LimparCancelarCampos;
+procedure TForm1.Pesquisar;
 begin
-  edtDescricao.Text := '';
-  edtEan.Text := '';
-  masDataValidade.Text := '';
+  DM.QryProdutos.Close;
+  DM.QryProdutos.SQL.Clear;
+
+  DM.QryProdutos.SQL.Text := 'select * from produtos where descricao like ' +  QuotedStr('%' + edtPesquisar.Text + '%') ;
+  DM.QryProdutos.Open();
 end;
 
 procedure TForm1.PopularEdits;
@@ -227,3 +252,7 @@ begin
 end;
 
 end.
+
+
+
+
