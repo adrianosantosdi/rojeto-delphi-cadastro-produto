@@ -83,7 +83,7 @@ end;
 
 procedure TForm1.BotaoExcluir;
 begin
-   btnNovo.Enabled := false;
+   btnNovo.Enabled := true;
    btnSalvar.Enabled := false;
    btnEditar.Enabled := false;
    btnCancelar.Enabled := false;
@@ -101,11 +101,11 @@ end;
 
 procedure TForm1.BotaoSalvar;
 begin
-  btnNovo.Enabled := false;
+  btnNovo.Enabled := true;
   btnSalvar.Enabled := true;
-  btnEditar.Enabled := false;
+  btnEditar.Enabled := true;
   btnCancelar.Enabled := true;
-  btnExcluir.Enabled := false;
+  btnExcluir.Enabled := true;
 end;
 
 procedure TForm1.btnCancelarClick(Sender: TObject);
